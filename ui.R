@@ -14,6 +14,7 @@ shinyUI(pageWithSidebar(
     verbatimTextOutput("inputValue"),
     h4('Outer wall temperature in C'),
     verbatimTextOutput("temperature"),
-    h5('Q_dot=1.6W, h=152 w/(m^2C), k=.032 w/mc, and wall width of 2 cm')
+    h5('ASSumptions'),
+    h5('Q_dot=1.6W, h=152 w/(m^2C), k=.032 w/mc,Ambient temperature of 20c and wall width of 2 cm')
     )
 ))
