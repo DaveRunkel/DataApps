@@ -1,0 +1,108 @@
+One Dimensional heat transfer through a wall with user varied thickness and a convection boundary layer
+========================================================
+author: Dave!
+date: 7/22/2015
+
+Introduction
+========================================================
+
+A very basic look at the effects of wall thickness on external wall temperature.
+
+Results are calculated using the concept of 'Thermal resistance' a network of convection (using a standard heat transfer coefficient for air), an ambient air temperature of 20C, a heat transfer rate of 1.6W, and the thermal conductivity of a ceramic blanket insulator.
+
+
+Base Equations
+========================================================
+
+Q_dot= heat transfer rate
+h= heat transfer coefficient
+k=thermal conductivity
+T_inf= ambient temperature
+T_1= outer wall temperature
+L=Wall length
+W=wall width
+
+T_1= Q_dot*(1/(k*W)+ 1/(h*L*W))+T_inf
+
+where (1/(k*W)) is the conduction term and 1/(h*L*W) is the convection term
+
+
+Calculation
+========================================================
+
+Calculates the outer wall temperature based on the user input
+<small>
+
+```r
+W<-2 #cm
+hW<-304 #W/(m^2*cm)
+k<-.032 #W/(m*cm)
+T_inf<-20 #c
+Q_dot<-1.6 #W
+A<<- function(L) Q_dot*(1/(k*W)+1/(L*hW))+T_inf
+T_1<<-A
+```
+</small>
+
+Shiny-ui.R
+========================================================
+<small>
+
+```r
+library(shiny)
+shinyUI(pageWithSidebar(
+  headerPanel("1D Convection and Conduction through a ceramic fiber blanket"),
+  sidebarPanel(
+    numericInput('L', 'Enter length of wall in centimeters', 0, min=1),
+    submitButton('Engage!'),
+    wellPanel(
+      helpText(   a("Click here for thermal conductivity reference chart",
+                    href="http://www.electronics-cooling.com/2002/05/the-thermal-conductivity-of-thermal-insulators/")))
+  ),
+  mainPanel(
+    h2('Assumes constant thermodynamics properties and steady state with no heat generation'),
+    h3('Thermodynamics!'),
+    h4('Wall thickness'),
+    verbatimTextOutput("inputValue"),
+    h4('Outer wall temperature in C'),
+    verbatimTextOutput("temperature"),
+    h5('Q_dot=1.6W, h=152 w/(m^2C), k=.032 w/mc, and wall width of 2 cm')
+    )
+))
+```
+
+<!--html_preserve--><div class="container-fluid">
+<div class="row">
+<div class="col-sm-12">
+<h1>1D Convection and Conduction through a ceramic fiber blanket</h1>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-4">
+<form class="well">
+<div class="form-group shiny-input-container">
+<label for="L">Enter length of wall in centimeters</label>
+<input id="L" type="number" class="form-control" value="0" min="1"/>
+</div>
+<div>
+<button type="submit" class="btn btn-primary">Engage!</button>
+</div>
+<div class="well">
+<span class="help-block">
+<a href="http://www.electronics-cooling.com/2002/05/the-thermal-conductivity-of-thermal-insulators/">Click here for thermal conductivity reference chart</a>
+</span>
+</div>
+</form>
+</div>
+<div class="col-sm-8">
+<h2>Assumes constant thermodynamics properties and steady state with no heat generation</h2>
+<h3>Thermodynamics!</h3>
+<h4>Wall thickness</h4>
+<pre id="inputValue" class="shiny-text-output"></pre>
+<h4>Outer wall temperature in C</h4>
+<pre id="temperature" class="shiny-text-output"></pre>
+<h5>Q_dot=1.6W, h=152 w/(m^2C), k=.032 w/mc, and wall width of 2 cm</h5>
+</div>
+</div>
+</div><!--/html_preserve-->
+</small>
